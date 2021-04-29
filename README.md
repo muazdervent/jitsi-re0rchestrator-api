@@ -1,11 +1,11 @@
-# Jitsi reOrchestrator API
+# Jitsi re0rchestrator API
 
 Jitsi reOrchestartor API for Kubernetes. The purpose of this API is to run and manage more than one Jitsi-Meet on a kubernetes cluster.
 
 
 ## Architecture
 
-![architecture_image](https://github.com/muazdervent/jitsi-reorchestrator-api/blob/main/architecture_image.png?raw=true)
+![architecture_image](https://github.com/muazdervent/jitsi-re0rchestrator-api/blob/main/architecture_image.png?raw=true)
 
 ## Installation and explanation
 
