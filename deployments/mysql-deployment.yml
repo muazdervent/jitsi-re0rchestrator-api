@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: orch-mysql-pv
+spec:
+ accessModes: [ "ReadWriteOnce" ]
+ capacity:
+  storage: "5Gi"
+ hostPath:
+  path: /mnt/reorchestrator/mysql-data  
+
+##You can data change path.
+
+---
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: orhc-mysql-pvc
+spec:
+ accessModes:
+  - ReadWriteOnce
+ resources:
+  requests:
+   storage: 5Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reorch-mysql
+spec:
+  selector:
+    matchLabels:
+      app: reorch-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reorch-mysql
+    spec:
+      
+      containers:
+        -
+          env:
+            -
+              name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: orch-mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+            -
+              name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: orch-mysql-secret
+                  key: MYSQL_DATABASE
+            -
+              name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: orch-mysql-secret
+                  key: MYSQL_USER
+          image: "mysql:5.7"
+          name: mysqlcontainername
+          ports:
+            -
+              containerPort: 3306
+              name: mysql
+              protocol: TCP
+          volumeMounts:
+            -
+              mountPath: /var/lib/mysql
+              name: vol-mysql
+              subPath: dbdata
+      volumes:
+        -
+          name: vol-mysql
+          persistentVolumeClaim:
+            claimName: orch-mysql-pvc
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: orch-mysql-service
+spec:
+  ports:
+    - name: orchmysqlportname
+      port: 3306
+      targetPort: 3306
+      protocol: TCP
+      nodePort: 30306 ## you can also change nodePort
+  type: NodePort
+  selector:
+    app: reorch-mysql
+
+
+#kubectl create secret generic orch-mysql-secret --from-literal=MYSQL_ROOT_PASSWORD=root --from-literal=MYSQL_DATABASE=reorchestrator --from-literal=MYSQL_USER=root

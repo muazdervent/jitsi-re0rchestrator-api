@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS sessions_jibri (
+    session_id INT AUTO_INCREMENT PRIMARY KEY,
+    session_web_port VARCHAR(255) NOT NULL,
+    session_uniq_id VARCHAR(500),
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS sessions_logs (
+    session_id INT AUTO_INCREMENT PRIMARY KEY,
+    session_web_port VARCHAR(255) NOT NULL,
+    session_uniq_id VARCHAR(500),
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE IF NOT EXISTS video_records (
+    record_id INT AUTO_INCREMENT PRIMARY KEY,
+    session_uniq_id VARCHAR(500) NOT NULL,
+    record_path VARCHAR(500),
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
