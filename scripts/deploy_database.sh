@@ -28,54 +28,74 @@ echo -e "import mysql.connector \n"\
 " \n"\
 " \n" > MYsql.py
 
+kubectl create secret generic orch-mysql-secret --from-literal=MYSQL_ROOT_PASSWORD=$mysql_root_password --from-literal=MYSQL_DATABASE=$mysql_database --from-literal=MYSQL_USER=$mysql_username --from-literal=MYSQL_PASSWORD=$mysql_password
+
 
 echo -e "apiVersion: apps/v1 \n"\
 "kind: Deployment \n"\
 "metadata: \n"\
-"  name: mysql-deployment \n"\
+"  name: reorch-mysql-deployment \n"\
 "  labels: \n"\
-"    app: mysql \n"\
+"    app: reorch-mysql \n"\
 "spec: \n"\
 "  replicas: 1 \n"\
 "  selector: \n"\
 "    matchLabels: \n"\
-"      app: mysql \n"\
+"      app: reorch-mysql \n"\
 "  template: \n"\
 "    metadata: \n"\
 "      labels: \n"\
-"        app: mysql \n"\
+"        app: reorch-mysql \n"\
 "    spec: \n"\
 "      containers: \n"\
-"        - name: mysql \n"\
+"        - name: mysql57 \n"\
 "          image: mysql:5.7 \n"\
 "          ports: \n"\
 "            - containerPort: 3306 \n"\
 "          volumeMounts: \n"\
 "            - mountPath: \"/var/lib/mysql\" \n"\
-"              subPath: \"mysql\" \n"\
-"              name: mysql-data \n"\
+"              name: reorch-mysql-data \n"\
 "          env: \n"\
 "            - name: MYSQL_ROOT_PASSWORD \n"\
 "              valueFrom: \n"\
 "                secretKeyRef: \n"\
 "                  name: mysql-secrets \n"\
 "                  key: ROOT_PASSWORD \n"\
+"             - name: MYSQL_DATABASE \n"\
+"               valueFrom: \n"\
+"                 secretKeyRef: \n"\
+"                   name: orch-mysql-secret \n"\
+"                   key: MYSQL_DATABASE \n"\
+"             - name: MYSQL_USER \n"\
+"               valueFrom: \n"\
+"                 secretKeyRef: \n"\
+"                   name: orch-mysql-secret \n"\
+"                   key: MYSQL_USER \n"\
+"             - name: MYSQL_PASSWORD \n"\
+"               valueFrom: \n"\
+"                 secretKeyRef: \n"\
+"                   name: orch-mysql-secret \n"\
+"                   key: MYSQL_PASSWORD \n"\
 "      volumes: \n"\
-"        - name: mysql-data \n"\
-"          persistentVolumeClaim: \n"\
-"            claimName: mysql-data-disk \n"\
+"        - name: reorch-mysql-data \n"\
+"          hostPath \n"\
+"            path:"$mysql_data_path" \n"\
+"            type: DirectoryOrCreate \n"\
 "--- \n"\
 "apiVersion: v1 \n"\
 "kind: Service \n"\
 "metadata: \n"\
-"  name: mysql-service \n"\
+"  name: reorch-mysql-service \n"\
 "spec: \n"\
-"  selector: \n"\
-"    app: mysql \n"\
 "  ports: \n"\
-"  - protocol: TCP \n"\
-"    port: 3306 \n"\
-"    targetPort: 3306 \n"\
+"    - name: orchmysqlportname \n"\
+"      port: 3306 \n"\
+"      targetPort: 3306 \n"\
+"      protocol: TCP \n"\
+"      nodePort:"$mysql_port" \n"\
+"  type: NodePort \n"\
+"  selector: \n"\
+"    app: reorch-mysql \n"\
 " \n" > mysql5-7-deployment.yml
 
 

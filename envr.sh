@@ -1,0 +1,6 @@
+export mysql_root_password="sFhkvWfl4GdvN654G"
+export mysql_username="reorch_user"
+export mysql_password="root_password_123"
+export mysql_ip="192.168.1.1"
+export mysql_port="30306"
+export mysql_database="reorch"
