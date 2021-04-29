@@ -5,7 +5,7 @@ Jitsi reOrchestartor API for Kubernetes. The purpose of this API is to run and m
 
 ## Architecture
 
-![architecture_image](https://github.com/muazdervent/jitsi-reorchestrator-api/blob/master/architecture_image.png?raw=true)
+![architecture_image](https://github.com/muazdervent/jitsi-reorchestrator-api/blob/main/architecture_image.png?raw=true)
 
 ## Installation and explanation
 
@@ -32,4 +32,4 @@ your_domain_or_ip:30306
 
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+GPL v3 License
