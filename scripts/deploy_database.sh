@@ -101,4 +101,5 @@ echo -e "apiVersion: apps/v1 \n"\
 
 kubectl apply -f mysql5-7-deployment.yml \n"\
 
-
+echo "# Creating database tables..."
+python3 ./scrpits/create_tables.py

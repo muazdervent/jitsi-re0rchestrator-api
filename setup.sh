@@ -15,3 +15,10 @@ kubectl apply -f ./deployments/jitsi-env.yml
 
 echo "# Creating jibri finalize script..."
 ./scripts/create_jibri_finalize.sh
+
+mv jitsi-data /mnt/reorchestrator
+
+forever start express.js
+
+nohup ./cleaner.sh &
+
