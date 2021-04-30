@@ -1,17 +1,18 @@
 #!/bin/bash
 . ../envr.sh
-
+. ./envr.sh
+mkdir -p /mnt/jitsi-data/dbdata
 echo -e "import mysql.connector \n"\
 "import datetime \n"\
 "class Database: \n"\
-" def __init__(self): \n"\
-"   self.mydb = mysql.connector.connect( \n"\
-"     host=\""$mysql_ip"\",\n"\
-"     user=\""$mysql_username"\",\n"\
-"     password=\""$mysql_password"\",\n"\
-"     port=\""$mysql_port"\",\n"\
-"     database=\""$mysql_database"\"\n"\
-"   )\n"\
+"  def __init__(self): \n"\
+"    self.mydb = mysql.connector.connect( \n"\
+"      host=\""$mysql_ip"\",\n"\
+"      user=\""$mysql_username"\",\n"\
+"      password=\""$mysql_password"\",\n"\
+"      port=\""$mysql_port"\",\n"\
+"      database=\""$mysql_database"\"\n"\
+"      )\n"\
 "    self.cursor = self.mydb.cursor()\n"\
 "  def select(self, query):\n"\
 "    self.cursor.execute(query)\n"\
@@ -27,7 +28,7 @@ echo -e "import mysql.connector \n"\
 " \n"\
 " \n"\
 " \n" > MYsql.py
-
+echo "mysql_root_password:"$mysql_root_password
 kubectl create secret generic orch-mysql-secret --from-literal=MYSQL_ROOT_PASSWORD=$mysql_root_password --from-literal=MYSQL_DATABASE=$mysql_database --from-literal=MYSQL_USER=$mysql_username --from-literal=MYSQL_PASSWORD=$mysql_password
 
 
@@ -59,27 +60,27 @@ echo -e "apiVersion: apps/v1 \n"\
 "            - name: MYSQL_ROOT_PASSWORD \n"\
 "              valueFrom: \n"\
 "                secretKeyRef: \n"\
-"                  name: mysql-secrets \n"\
-"                  key: ROOT_PASSWORD \n"\
-"             - name: MYSQL_DATABASE \n"\
-"               valueFrom: \n"\
-"                 secretKeyRef: \n"\
-"                   name: orch-mysql-secret \n"\
-"                   key: MYSQL_DATABASE \n"\
-"             - name: MYSQL_USER \n"\
-"               valueFrom: \n"\
-"                 secretKeyRef: \n"\
-"                   name: orch-mysql-secret \n"\
-"                   key: MYSQL_USER \n"\
-"             - name: MYSQL_PASSWORD \n"\
-"               valueFrom: \n"\
-"                 secretKeyRef: \n"\
-"                   name: orch-mysql-secret \n"\
-"                   key: MYSQL_PASSWORD \n"\
+"                  name: orch-mysql-secret \n"\
+"                  key: MYSQL_ROOT_PASSWORD \n"\
+"            - name: MYSQL_DATABASE \n"\
+"              valueFrom: \n"\
+"                secretKeyRef: \n"\
+"                  name: orch-mysql-secret \n"\
+"                  key: MYSQL_DATABASE \n"\
+"            - name: MYSQL_USER \n"\
+"              valueFrom: \n"\
+"                secretKeyRef: \n"\
+"                  name: orch-mysql-secret \n"\
+"                  key: MYSQL_USER \n"\
+"            - name: MYSQL_PASSWORD \n"\
+"              valueFrom: \n"\
+"                secretKeyRef: \n"\
+"                  name: orch-mysql-secret \n"\
+"                  key: MYSQL_PASSWORD \n"\
 "      volumes: \n"\
 "        - name: reorch-mysql-data \n"\
-"          hostPath \n"\
-"            path:"$mysql_data_path" \n"\
+"          hostPath: \n"\
+"            path: /mnt/reorchestrator/jitsi-data/dbdata \n"\
 "            type: DirectoryOrCreate \n"\
 "--- \n"\
 "apiVersion: v1 \n"\
@@ -92,14 +93,13 @@ echo -e "apiVersion: apps/v1 \n"\
 "      port: 3306 \n"\
 "      targetPort: 3306 \n"\
 "      protocol: TCP \n"\
-"      nodePort:"$mysql_port" \n"\
+"      nodePort: "$mysql_port" \n"\
 "  type: NodePort \n"\
 "  selector: \n"\
-"    app: reorch-mysql \n"\
-" \n" > mysql5-7-deployment.yml
+"    app: reorch-mysql \n" > mysql5-7-deployment.yml
 
 
-kubectl apply -f mysql5-7-deployment.yml \n"\
+kubectl apply -f mysql5-7-deployment.yml
 
 echo "# Creating database tables..."
-python3 ./scrpits/create_tables.py
+python3 ./create_tables.py

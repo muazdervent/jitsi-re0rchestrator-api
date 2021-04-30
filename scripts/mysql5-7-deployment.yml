@@ -1,0 +1,66 @@
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: reorch-mysql-deployment 
+  labels: 
+    app: reorch-mysql 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      app: reorch-mysql 
+  template: 
+    metadata: 
+      labels: 
+        app: reorch-mysql 
+    spec: 
+      containers: 
+        - name: mysql57 
+          image: mysql:5.7 
+          ports: 
+            - containerPort: 3306 
+          volumeMounts: 
+            - mountPath: "/var/lib/mysql" 
+              name: reorch-mysql-data 
+          env: 
+            - name: MYSQL_ROOT_PASSWORD 
+              valueFrom: 
+                secretKeyRef: 
+                  name: orch-mysql-secret 
+                  key: MYSQL_ROOT_PASSWORD 
+            - name: MYSQL_DATABASE 
+              valueFrom: 
+                secretKeyRef: 
+                  name: orch-mysql-secret 
+                  key: MYSQL_DATABASE 
+            - name: MYSQL_USER 
+              valueFrom: 
+                secretKeyRef: 
+                  name: orch-mysql-secret 
+                  key: MYSQL_USER 
+            - name: MYSQL_PASSWORD 
+              valueFrom: 
+                secretKeyRef: 
+                  name: orch-mysql-secret 
+                  key: MYSQL_PASSWORD 
+      volumes: 
+        - name: reorch-mysql-data 
+          hostPath: 
+            path: /mnt/reorchestrator/jitsi-data/dbdata 
+            type: DirectoryOrCreate 
+--- 
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: reorch-mysql-service 
+spec: 
+  ports: 
+    - name: orchmysqlportname 
+      port: 3306 
+      targetPort: 3306 
+      protocol: TCP 
+      nodePort: 30306 
+  type: NodePort 
+  selector: 
+    app: reorch-mysql 
+
