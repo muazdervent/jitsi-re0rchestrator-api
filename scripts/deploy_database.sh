@@ -27,7 +27,7 @@ echo -e "import mysql.connector \n"\
 "    self.mydb.close()\n"\
 " \n"\
 " \n"\
-" \n" > MYsql.py
+" \n" > ./express/MYsql.py
 echo "mysql_root_password:"$mysql_root_password
 kubectl create secret generic orch-mysql-secret --from-literal=MYSQL_ROOT_PASSWORD=$mysql_root_password --from-literal=MYSQL_DATABASE=$mysql_database --from-literal=MYSQL_USER=$mysql_username --from-literal=MYSQL_PASSWORD=$mysql_password
 
@@ -102,4 +102,4 @@ echo -e "apiVersion: apps/v1 \n"\
 kubectl apply -f mysql5-7-deployment.yml
 
 echo "# Creating database tables..."
-python3 ./scripts/create_tables.py
+#python3 ./scripts/create_tables.py

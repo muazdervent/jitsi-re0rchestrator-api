@@ -22,4 +22,4 @@ echo -e "#!/bin/bash    \n"\
 "insert into \$db (\$ses,record_path) values('\$SESSION_UNIQ_ID','\$x');  \n"\
 "  \n"\
 "  \n"\
-" \n" > ./jitsi-data/jibri-var/config/finalize1.sh
+" \n" > ./jitsi-data/jibri-var/config/finalize.sh

@@ -25,8 +25,9 @@ sudo mv jitsi-data /mnt/reorchestrator
 cd express
 npm init
 npm i -s express.js
-sudo forever start express.js
+
+#sudo forever start express.js
 
 cd ..
-nohup ./cleaner.sh &
+#nohup ./cleaner.sh &
 
