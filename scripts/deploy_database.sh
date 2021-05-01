@@ -1,7 +1,7 @@
 #!/bin/bash
 . ../envr.sh
 . ./envr.sh
-mkdir -p /mnt/jitsi-data/dbdata
+sudo mkdir -p /mnt/reorchestrator/dbdata
 echo -e "import mysql.connector \n"\
 "import datetime \n"\
 "class Database: \n"\
@@ -80,7 +80,7 @@ echo -e "apiVersion: apps/v1 \n"\
 "      volumes: \n"\
 "        - name: reorch-mysql-data \n"\
 "          hostPath: \n"\
-"            path: /mnt/reorchestrator/jitsi-data/dbdata \n"\
+"            path: /mnt/reorchestrator/dbdata \n"\
 "            type: DirectoryOrCreate \n"\
 "--- \n"\
 "apiVersion: v1 \n"\
@@ -102,4 +102,4 @@ echo -e "apiVersion: apps/v1 \n"\
 kubectl apply -f mysql5-7-deployment.yml
 
 echo "# Creating database tables..."
-python3 ./create_tables.py
+python3 ./scripts/create_tables.py
