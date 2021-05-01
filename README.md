@@ -11,7 +11,12 @@ Jitsi reOrchestartor API for Kubernetes. The purpose of this API is to run and m
 
 Please follow README.md in **installation** folder.
 
+## WARNING!
+
+This project was created only to show that the system can be implemented. It is your responsibility to ensure the security of the system. 
+
 ## Usage
+You can use the created deployments by forwarding the required port with Jitsi Meet Api. 
 
 - Send request to API for deploying Jitsi:
 
