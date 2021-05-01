@@ -2,10 +2,10 @@
 echo "# Setup starting..."
 
 echo "# Requirements installing..."
-./scripts/requirements.sh
+sudo ./scripts/requirements.sh
 
 echo "# Database deploying..."
-./scripts/deploy_database.sh
+sudo ./scripts/deploy_database.sh
 
 echo "# Creating jitsi namespace..."
 kubectl create ns jitsi
@@ -13,12 +13,16 @@ kubectl create ns jitsi
 echo "# Creating jitsi envirenment configMap..."
 kubectl apply -f ./deployments/jitsi-env.yml
 
+echo "# Creating metric server..."
+kubectl apply -f ./deployments/metric-server.yml
+
 echo "# Creating jibri finalize script..."
-./scripts/create_jibri_finalize.sh
+sudo ./scripts/create_jibri_finalize.sh
 
-mv jitsi-data /mnt/reorchestrator
+sudo mkdir -p mnt/reorchestrator
+sudo mv jitsi-data /mnt/reorchestrator
 
-forever start express.js
+sudo forever start express.js
 
 nohup ./cleaner.sh &
 
