@@ -28,8 +28,6 @@ http://your_domain_or_ip:3000/jitsi?operation=delete_video_record&parameter=123 
 - Access to database:
 
 your_domain_or_ip:30306
-## Contributing
-
 
 ## License
 GPL v3 License
