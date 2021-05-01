@@ -1,7 +1,7 @@
 
 from MYsql import * 
 import mysql.connector
-f = open("./scripts/database.txt","r")
+f = open("database.txt","r")
 query = f.read()
 qlist = query.split(';')
 
