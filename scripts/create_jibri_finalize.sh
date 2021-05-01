@@ -1,5 +1,5 @@
 #!/bin/bash
-. ../envr.sh
+. ./envr.sh
 
 echo -e "#!/bin/bash    \n"\
 "RECORDINGS_DIR=\$1  \n"\
@@ -7,7 +7,7 @@ echo -e "#!/bin/bash    \n"\
 "last=""  \n"\
 "last=\${arrIN[-1]}  \n"\
 "arrIN=(\${lastt//// })  \n"\
-"video=$(find \$RECORDINGS_DIR -print | grep -i .mp4)  \n"\
+"video=\$(find \$RECORDINGS_DIR -print | grep -i .mp4)  \n"\
 "arrN=(\${video//// })  \n"\
 "video=\${arrN[-1]}  \n"\
 "x=\$last/\$video  \n"\
