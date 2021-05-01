@@ -14,7 +14,7 @@ $ git clone https://github.com/muazdervent/jitsi-re0rchestrator-api.git
 
 Set the envr.sh(you can give the value you want, these will be used for setup ):
 ```bash
-$ cd jitsi-re0chestrator-api
+$ cd jitsi-re0rchestrator-api
 $ nano envr.sh
 ```
 
