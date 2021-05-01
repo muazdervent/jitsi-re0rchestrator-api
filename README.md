@@ -16,7 +16,9 @@ Please follow README.md in **installation** folder.
 This project was created only to show that the system can be implemented. It is your responsibility to ensure the security of the system. 
 
 ## Usage
-You can use the created deployments by forwarding the required port with Jitsi Meet Api. 
+You can use the created deployments by forwarding the required port with Jitsi Meet Api.
+
+You can also use this api with [moodle-mod_jitsi](https://github.com/muazdervent/moodle-mod_jitsi).
 
 - Send request to API for deploying Jitsi:
 
