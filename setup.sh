@@ -22,7 +22,11 @@ sudo ./scripts/create_jibri_finalize.sh
 sudo mkdir -p /mnt/reorchestrator
 sudo mv jitsi-data /mnt/reorchestrator
 
+cd express
+npm init
+npm i -s express.js
 sudo forever start express.js
 
+cd ..
 nohup ./cleaner.sh &
 
